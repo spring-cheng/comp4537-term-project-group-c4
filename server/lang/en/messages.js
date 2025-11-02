@@ -19,9 +19,21 @@ export const userMessages = {
   // Auth / Access
   UNAUTHORIZED: "Unauthorized access.",
   LOGIN_FAILED: "Invalid email or password.",
+  LOGIN_SUCCESS: "Login successful.",
   REGISTER_SUCCESS: "User registered successfully.",
   REGISTER_FAILED: "User registration failed.",
+  EMAIL_EXISTS: "Email already registered.",
+  INVALID_EMAIL: "Invalid email format.",
+  INVALID_PASSWORD: "Password must be at least 6 characters.",
+  INVALID_FIRST_NAME: "First name is required.",
+  LOGOUT_SUCCESS: "Logout successful.",
+  TOKEN_MISSING: "Authentication token is missing.",
+  TOKEN_INVALID: "Invalid or expired token.",
 
   // API usage
-  API_LIMIT_REACHED: "Free API usage limit reached."
+  API_LIMIT_REACHED: "Free API usage limit reached.",
+  FREE_API_LIMIT: 20,
+
+  // Admin
+  FORBIDDEN: "Forbidden. Admin access required.",
 };

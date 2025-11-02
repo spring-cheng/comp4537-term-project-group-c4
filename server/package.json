@@ -5,6 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
+    "start": "node app.js",
+    "create-admin": "node utils/createAdmin.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,6 +17,8 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2"
+    "express-validator": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.11.5"
   }
 }
