@@ -5,5 +5,7 @@ export const MESSAGES = {
   passwordLabel: "Password (min 6 characters)",
   confirmPasswordLabel: "Confirm Password",
   registerButton: "Register",
-  messageDiv: ""
+  messageDiv: "",
+  loginTitle: "Login",
+  loginButton: "Login",
 };

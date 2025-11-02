@@ -22,6 +22,10 @@ app.get("/register", (req, res) => {
     res.render("register", { messages: MESSAGES });
 });
 
+app.get("/login", (req, res) => {
+  res.render("login", { messages: MESSAGES });
+});
+
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
