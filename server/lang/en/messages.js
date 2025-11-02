@@ -33,6 +33,8 @@ export const userMessages = {
   // API usage
   API_LIMIT_REACHED: "Free API usage limit reached.",
   FREE_API_LIMIT: 20,
+  API_KEY_MISSING: "API key is missing.",
+  API_KEY_INVALID: "Invalid API key.",
 
   // Admin
   FORBIDDEN: "Forbidden. Admin access required.",

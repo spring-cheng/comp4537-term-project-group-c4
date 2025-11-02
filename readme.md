@@ -4,8 +4,13 @@
 RESTful API server built with Express.js using Object-Oriented Programming (OOP) principles. Provides authentication, user management, and admin functionality with JWT-based security.
 
 ---
+##  LLM Model
 
-## 📁 Folder Structure
+**Model:** [TinyLlama-1.1B-Chat-v1.0](https://huggingface.co/TinyLlama/TinyLlama-1.1B-Chat-v1.0)
+
+A lightweight 1.1B parameter language model from TinyLlama, optimized for chat applications.
+
+##  Folder Structure
 
 ```
 server/
@@ -46,31 +51,8 @@ server/
 └── package.json                    # Node.js dependencies and scripts
 ```
 
----
 
-## 🔄 Request Flow
-
-1. **Request arrives** → `app.js` receives HTTP request
-2. **Route matches** → `routes/*.js` matches URL pattern
-3. **Middleware executes** → `middleware/*.js` validates/auth checks
-4. **Controller handles** → `controllers/*.js` processes the request
-5. **Service logic** → `services/*.js` executes business logic
-6. **Model queries** → `models/*.js` interacts with database
-7. **Response sent** → JSON response returned to client
-
----
-
-## 🔐 Security Features
-
-- ✅ **Password Hashing**: Bcrypt with 10 salt rounds
-- ✅ **JWT Authentication**: Token-based stateless authentication
-- ✅ **SQL Injection Prevention**: Parameterized queries
-- ✅ **XSS Protection**: Input sanitization
-- ✅ **Input Validation**: express-validator for request validation
-
----
-
-## 📋 API Endpoints
+##  API Endpoints
 
 ### Authentication (`/api/auth`)
 - `POST /register` - Register new user
@@ -87,9 +69,56 @@ server/
 - `GET /user/:id` - Get specific user details (admin only)
 - `PATCH /user/:id/reset-api-calls` - Reset user's API calls (admin only)
 
+### LLM API (`/api/generate`)
+- `POST /generate` - Generate text using TinyLlama model
+
+**Endpoint:** `https://charlieho.me/api/generate`
+
+**Headers:**
+- `Content-Type: application/json`
+- `x-api-key: supersecret` (Testing: all users use this shared key)
+- `Authorization: Bearer <JWT_TOKEN>` (Optional: for user identification and API call tracking)
+
+**Request Body:**
+```json
+{
+  "model": "tinyllama",
+  "prompt": "Your prompt text here",
+  "options": {
+    "temperature": 0.5
+  }
+}
+```
+
+**Response:**
+- Streaming response with JSON lines (Server-Sent Events format)
+- Each line contains a JSON object with a `response` field
+- Response format: `{"response": "generated text chunk"}\n`
+
+**Example Usage:**
+```javascript
+const response = await fetch("https://charlieho.me/api/generate", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "x-api-key": " ",  
+  },
+  body: JSON.stringify({
+    model: "tinyllama",
+    prompt: "Hello, how are you?",
+    options: { temperature: 0.5 }
+  })
+});
+
+// Read streaming response
+const reader = response.body.getReader();
+const decoder = new TextDecoder();
+// ... process stream
+```
+
 ---
 
-## 🏗️ Architecture Pattern
+### Architecture Pattern
 
 **MVC-like OOP Structure:**
 - **Routes** = Route definitions

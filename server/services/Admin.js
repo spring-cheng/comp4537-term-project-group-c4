@@ -85,11 +85,7 @@ class Admin {
     if (!user) {
       throw new Error(userMessages.NOT_FOUND);
     }
-
-    if (user.role === "admin") {
-      throw new Error("Cannot reset API calls for admin users.");
-    }
-
+    
     await user.resetApiCalls();
   }
 }

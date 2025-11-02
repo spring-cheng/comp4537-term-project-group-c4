@@ -52,6 +52,48 @@ class Auth {
       }
     };
   }
+
+  /**
+   * Validate API key (for testing: accepts 'supersecret')
+   * Optionally validates JWT token for user identification and API call tracking
+   * @returns {Function} Express middleware function
+   */
+  validateApiKey() {
+    return (req, res, next) => {
+      const apiKey = req.headers["x-api-key"];
+
+      // Check if API key is provided
+      if (!apiKey) {
+        return res.status(401).json({
+          error: userMessages.API_KEY_MISSING,
+        });
+      }
+
+      // For testing: validate against shared secret
+      const TEST_API_KEY = "supersecret";
+      if (apiKey !== TEST_API_KEY) {
+        return res.status(403).json({
+          error: userMessages.API_KEY_INVALID,
+        });
+      }
+
+      // Optionally verify JWT token if provided (for user identification)
+      const authHeader = req.headers["authorization"];
+      const token = authHeader && authHeader.split(" ")[1]; // Bearer TOKEN
+
+      if (token) {
+        try {
+          const user = this.jwtService.verifyToken(token);
+          req.user = user; // Attach user info for API call tracking
+        } catch (error) {
+          // JWT invalid, but API key is valid - continue without user info
+          // (user won't be tracked for this call)
+        }
+      }
+
+      next();
+    };
+  }
 }
 
 export default new Auth();
