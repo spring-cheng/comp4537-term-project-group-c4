@@ -35,7 +35,7 @@ async function handleRegistration(event) {
     return;
   }
 
-  if (password.length < 6) {
+  if (password.length < 3) {
     showMessage('message', MESSAGES.passwordMinLength, true);
     return;
   }

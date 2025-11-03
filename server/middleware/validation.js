@@ -13,7 +13,7 @@ export const handleValidationErrors = (req, res, next) => {
     let errorMessage = userMessages.INVALID_INPUT;
     if (firstError.msg === "Email is required" || firstError.msg === "Invalid email format") {
       errorMessage = userMessages.INVALID_EMAIL;
-    } else if (firstError.msg === "Password must be at least 6 characters") {
+    } else if (firstError.msg === "Password must be at least 3 characters") {
       errorMessage = userMessages.INVALID_PASSWORD;
     }
 
@@ -44,8 +44,8 @@ export const validateRegisterInput = [
   body("password")
     .notEmpty()
     .withMessage("Password is required")
-    .isLength({ min: 6 })
-    .withMessage("Password must be at least 6 characters"),
+    .isLength({ min: 3 })
+    .withMessage("Password must be at least 3 characters"),
 
   // Handle validation errors
   handleValidationErrors,

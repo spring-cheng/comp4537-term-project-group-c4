@@ -24,7 +24,7 @@ export const userMessages = {
   REGISTER_FAILED: "User registration failed.",
   EMAIL_EXISTS: "Email already registered.",
   INVALID_EMAIL: "Invalid email format.",
-  INVALID_PASSWORD: "Password must be at least 6 characters.",
+  INVALID_PASSWORD: "Password must be at least 3 characters.",
   INVALID_FIRST_NAME: "First name is required.",
   LOGOUT_SUCCESS: "Logout successful.",
   TOKEN_MISSING: "Authentication token is missing.",

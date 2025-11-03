@@ -1,7 +1,7 @@
 export const MESSAGES = {
   title: "User Registration",
   emailLabel: "Email Address",
-  passwordLabel: "Password (min 6 characters)",
+  passwordLabel: "Password (min 3 characters)",
   confirmPasswordLabel: "Confirm Password",
   registerButton: "Register",
   messageDiv: "",
@@ -10,7 +10,7 @@ export const MESSAGES = {
   
   // Validation messages
   fillAllFields: "Please fill in all fields",
-  passwordMinLength: "Password must be at least 6 characters",
+  passwordMinLength: "Password must be at least 3 characters",
   
   // Button states
   registering: "Registering...",
