@@ -26,6 +26,14 @@ app.get("/login", (req, res) => {
   res.render("login", { messages: MESSAGES });
 });
 
+app.get("/dashboard", (req, res) => {
+  res.render("dashboard", { messages: MESSAGES });
+});
+
+app.get("/admin", (req, res) => {
+  res.render("admin", { messages: MESSAGES });
+});
+
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });

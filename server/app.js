@@ -1,10 +1,10 @@
 import cors from "cors";
 import express from "express";
-import User from "./models/User.js";
 import { userMessages } from "./lang/en/messages.js";
+import User from "./models/User.js";
+import Admin from "./routes/Admin.js";
 import Auth from "./routes/Auth.js";
 import Landing from "./routes/Landing.js";
-import Admin from "./routes/Admin.js";
 import DefaultAdmin from "./utils/defaultAdmin.js";
 
 /**
@@ -24,7 +24,13 @@ class App {
    * Initialize middleware
    */
   initializeMiddleware() {
-    this.app.use(cors());
+    // CORS configuration - allow requests from client origin (port 8080)
+    this.app.use(cors({
+      origin: 'http://localhost:8080',
+      credentials: true,
+      methods: ['GET', 'POST', 'PATCH', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key']
+    }));
     this.app.use(express.json());
   }
 
