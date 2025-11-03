@@ -1,0 +1,45 @@
+<%- include('partials/header', { title: "Admin Dashboard" }) %>
+
+<div class="admin-container">
+  <h1 class="page-title">Admin Dashboard</h1>
+
+  <section class="stats-section">
+    <h2>System Statistics</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total Users</h3>
+        <p id="total-users">0</p>
+      </div>
+      <div class="stat-card">
+        <h3>Total API Calls</h3>
+        <p id="total-calls">0</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="users-section">
+    <h2>All Users</h2>
+    <div class="table-container">
+      <table id="users-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>API Calls</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="5" class="loading">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <button id="logoutBtn" class="logout-btn">Logout</button>
+</div>
+
+<script src="admin.js"></script>
+
+<%- include('partials/footer') %>

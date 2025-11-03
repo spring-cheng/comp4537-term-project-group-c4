@@ -48,9 +48,7 @@ async function handleRegistration(event) {
   try {
     const response = await fetch(`${API_BASE_URL}/auth/register`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
 
@@ -64,12 +62,16 @@ async function handleRegistration(event) {
       showMessage('message', data.message || MESSAGES.registrationSuccess, false);
 
       if (data.token) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('jwt', data.token);
+        localStorage.setItem('role', data.user.role);
       }
 
       setTimeout(() => {
-        window.location.href = '/dashboard';
+        if (data.user.role === 'admin') {
+          window.location.href = '/admin';
+        } else {
+          window.location.href = '/';
+        }
       }, 1500);
     }
   } catch (error) {
@@ -100,9 +102,7 @@ async function handleLogin(event) {
   try {
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
 
@@ -116,13 +116,17 @@ async function handleLogin(event) {
       showMessage('message', data.message || MESSAGES.loginSuccess, false);
 
       if (data.token) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('jwt', data.token);
+        localStorage.setItem('role', data.user.role);
       }
 
       const user = data.user;
       setTimeout(() => {
-        window.location.href = user.role === 'admin' ? '/admin' : '/dashboard';
+        if (user.role === 'admin') {
+          window.location.href = '/admin';
+        } else {
+          window.location.href = '/';
+        }
       }, 1500);
     }
   } catch (error) {
@@ -135,14 +139,10 @@ async function handleLogin(event) {
 
 document.addEventListener('DOMContentLoaded', async () => {
   await loadMessages();
-  
+
   const registrationForm = document.getElementById('registrationForm');
-  if (registrationForm) {
-    registrationForm.addEventListener('submit', handleRegistration);
-  }
-  
+  if (registrationForm) registrationForm.addEventListener('submit', handleRegistration);
+
   const loginForm = document.getElementById('loginForm');
-  if (loginForm) {
-    loginForm.addEventListener('submit', handleLogin);
-  }
+  if (loginForm) loginForm.addEventListener('submit', handleLogin);
 });

@@ -8,12 +8,12 @@ import bcrypt from "bcrypt";
 class DefaultAdmin {
   constructor() {
     this.adminEmail = "admin@admin.com";
-    this.adminPassword = "111";
+    this.adminPassword = "123456";
   }
 
   /**
    * Create default admin user
-   * Creates admin@admin.com with password '111' if it doesn't exist
+   * Creates admin@admin.com with password '123456' if it doesn't exist
    * @returns {Promise<void>}
    */
   async create() {
@@ -61,4 +61,3 @@ class DefaultAdmin {
 }
 
 export default new DefaultAdmin();
-
