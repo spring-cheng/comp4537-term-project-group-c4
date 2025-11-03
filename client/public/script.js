@@ -70,7 +70,7 @@ async function handleRegistration(event) {
         if (data.user.role === 'admin') {
           window.location.href = '/admin';
         } else {
-          window.location.href = '/';
+          window.location.href = '/dashboard';
         }
       }, 1500);
     }
@@ -125,7 +125,7 @@ async function handleLogin(event) {
         if (user.role === 'admin') {
           window.location.href = '/admin';
         } else {
-          window.location.href = '/';
+          window.location.href = '/dashboard';
         }
       }, 1500);
     }
