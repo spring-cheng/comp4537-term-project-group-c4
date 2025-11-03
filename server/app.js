@@ -2,10 +2,10 @@ import cors from "cors";
 import express from "express";
 import { userMessages } from "./lang/en/messages.js";
 import User from "./models/User.js";
-import Auth from "./routes/Auth.js";
-import Landing from "./routes/Landing.js";
-import AI from "./routes/ai.js";
 import Admin from "./routes/admin.js";
+import AI from "./routes/ai.js";
+import Auth from "./routes/auth.js";
+import Landing from "./routes/Landing.js";
 import DefaultAdmin from "./utils/defaultAdmin.js";
 
 /**
