@@ -34,6 +34,10 @@ app.get("/admin", (req, res) => {
   res.render("admin", { messages: MESSAGES });
 });
 
+app.get("/ai-test", (req, res) => {
+  res.render("ai-test", { messages: MESSAGES });
+});
+
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });

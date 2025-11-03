@@ -2,9 +2,10 @@ import cors from "cors";
 import express from "express";
 import { userMessages } from "./lang/en/messages.js";
 import User from "./models/User.js";
-import Admin from "./routes/Admin.js";
 import Auth from "./routes/Auth.js";
 import Landing from "./routes/Landing.js";
+import AI from "./routes/ai.js";
+import Admin from "./routes/admin.js";
 import DefaultAdmin from "./utils/defaultAdmin.js";
 
 /**
@@ -60,11 +61,13 @@ class App {
     const authRoutes = new Auth();
     const landingRoutes = new Landing();
     const adminRoutes = new Admin();
+    const aiRoutes = new AI();
 
     // Register API routes
     this.app.use("/api/auth", authRoutes.getRouter());
     this.app.use("/api/landing", landingRoutes.getRouter());
     this.app.use("/api/admin", adminRoutes.getRouter());
+    this.app.use("/api", aiRoutes.getRouter());
   }
 
   /**
