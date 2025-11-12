@@ -64,6 +64,18 @@ class Admin {
         res.status(500).json({ error: "Internal server error" });
       });
     });
+
+    /**
+     * GET /api/admin/stats/endpoints
+     * Get endpoint usage statistics for all tracked API routes
+     */
+    this.router.get("/stats/endpoints", (req, res) => {
+      this.adminController.getEndpointStats(req, res).catch((err) => {
+        console.error("Unhandled error in getEndpointStats:", err);
+        res.status(500).json({ error: "Internal server error" });
+      });
+    });
+
   }
 
   /**

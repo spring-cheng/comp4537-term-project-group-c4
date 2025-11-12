@@ -105,6 +105,25 @@ class Admin {
       });
     }
   }
+
+  /**
+ * Get endpoint usage statistics
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
+  async getEndpointStats(req, res) {
+    try {
+      const stats = await this.adminService.getEndpointStats();
+      res.json({ stats });
+    } catch (error) {
+      console.error("Get endpoint stats error:", error);
+      res.status(500).json({
+        error: userMessages.SERVER_ERROR,
+        details: error.message,
+      });
+    }
+  }
+
 }
 
 export default Admin;

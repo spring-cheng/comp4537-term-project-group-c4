@@ -56,6 +56,40 @@ async function loadUsers() {
   }
 }
 
+// endpoint stats list
+async function loadEndpoints() {
+  try {
+    const res = await fetch(`${API_URL}/api/admin/stats/endpoints`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error(`Failed to fetch endpoints: ${res.status}`);
+    const data = await res.json();
+
+    const tableBody = document.querySelector("#endpoints-table tbody");
+
+    if (!data.stats || data.stats.length === 0) {
+      tableBody.innerHTML = '<tr><td colspan="3">No data available</td></tr>';
+      return;
+    }
+
+    tableBody.innerHTML = data.stats
+      .map(
+        (s) => `
+        <tr>
+          <td>${s.method}</td>
+          <td>${s.endpoint}</td>
+          <td>${s.count}</td>
+        </tr>`
+      )
+      .join("");
+  } catch (err) {
+    console.error(err);
+    const tableBody = document.querySelector("#endpoints-table tbody");
+    tableBody.innerHTML =
+      '<tr><td colspan="3" class="error">Error loading endpoint stats</td></tr>';
+  }
+}
+
 // reset a user's API call count
 async function resetCalls(userId) {
   if (!confirm("Reset API calls for this user?")) return;
@@ -87,3 +121,4 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
 
 loadUsage();
 loadUsers();
+loadEndpoints();

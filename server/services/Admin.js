@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import Database from "../db/Database.js";
 import { userMessages } from "../lang/en/messages.js";
 
 /**
@@ -6,6 +7,29 @@ import { userMessages } from "../lang/en/messages.js";
  * Handles admin-related business logic
  */
 class Admin {
+  /**
+   * Initialize endpoint_stats table
+   * @static
+   */
+  static async initEndpointStatsTable() {
+    const sql = `
+      CREATE TABLE IF NOT EXISTS endpoint_stats (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        method VARCHAR(10) NOT NULL,
+        endpoint VARCHAR(255) NOT NULL,
+        count INT DEFAULT 0,
+        UNIQUE KEY unique_endpoint (method, endpoint)
+      ) ENGINE=InnoDB;
+    `;
+
+    try {
+      await Database.query(sql);
+      console.log("Endpoint stats table is ready.");
+    } catch (err) {
+      console.error(`Error creating endpoint_stats table: ${err.message}`);
+      throw err;
+    }
+  }
   /**
    * Get all users with statistics
    * @returns {Promise<Object>} Users and statistics
@@ -87,6 +111,28 @@ class Admin {
     }
     
     await user.resetApiCalls();
+  }
+
+  /**
+   * Get endpoint usage statistics
+   * @returns {Promise<Array>} Array of endpoint stats
+   */
+  async getEndpointStats() {
+    try {
+      const [rows] = await Database.query(`
+        SELECT method, endpoint, count
+        FROM endpoint_stats
+        ORDER BY count DESC
+      `);
+      return rows || [];
+    } catch (error) {
+      console.error("Error fetching endpoint stats:", error);
+      // Return empty array if table doesn't exist or query fails
+      if (error.code === "ER_NO_SUCH_TABLE") {
+        return [];
+      }
+      throw new Error(userMessages.SERVER_ERROR);
+    }
   }
 }
 

@@ -2,11 +2,13 @@ import cors from "cors";
 import express from "express";
 import { userMessages } from "./lang/en/messages.js";
 import User from "./models/User.js";
+import AdminService from "./services/Admin.js";
 import Admin from "./routes/admin.js";
 import AI from "./routes/ai.js";
 import Auth from "./routes/auth.js";
 import Landing from "./routes/Landing.js";
 import DefaultAdmin from "./utils/defaultAdmin.js";
+import Database from "./db/Database.js";
 
 /**
  * Express Application Class
@@ -33,6 +35,21 @@ class App {
       allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key']
     }));
     this.app.use(express.json());
+
+    // Track API endpoint usage counts
+    this.app.use(async (req, res, next) => {
+      try {
+        const sql = `
+          INSERT INTO endpoint_stats (method, endpoint, count)
+          VALUES (?, ?, 1)
+          ON DUPLICATE KEY UPDATE count = count + 1
+        `;
+        await Database.query(sql, [req.method, req.path]);
+      } catch (err) {
+        console.error("Error updating endpoint stats:", err.message);
+      }
+      next();
+    });
   }
 
   /**
@@ -41,6 +58,7 @@ class App {
   async initializeDatabase() {
     try {
       await User.initTable();
+      await AdminService.initEndpointStatsTable();
       // Create default admin user
       await DefaultAdmin.create();
     } catch (error) {

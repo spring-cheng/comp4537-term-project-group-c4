@@ -185,7 +185,8 @@ button:active {
   margin-bottom: 0.5rem;
 }
 
-#users-table {
+#users-table,
+#endpoints-table {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
@@ -194,20 +195,24 @@ button:active {
 }
 
 #users-table th,
-#users-table td {
+#users-table td,
+#endpoints-table th,
+#endpoints-table td {
   padding: 0.9rem 1rem;
   border-bottom: 1px solid #ddd;
   text-align: left;
   font-size: 0.95rem;
 }
 
-#users-table th {
+#users-table th,
+#endpoints-table th {
   background-color: #eaf3ff;
   color: #004d99;
   font-weight: 600;
 }
 
-#users-table tr:hover {
+#users-table tr:hover,
+#endpoints-table tr:hover {
   background-color: #f1f6ff;
 }
 
