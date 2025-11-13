@@ -3,6 +3,129 @@ import AdminController from "../controllers/Admin.js";
 import authMiddleware from "../middleware/auth.js";
 
 /**
+ * @swagger
+ * tags:
+ *   name: Admin
+ *   description: Admin-only endpoints for monitoring and user management
+ */
+
+/**
+ * @swagger
+ * /api/admin/users:
+ *   get:
+ *     summary: Get all users with their API usage
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of users returned successfully
+ *       401:
+ *         description: Unauthorized — missing or invalid token
+ *       403:
+ *         description: Forbidden — user is not an admin
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /api/admin/usage:
+ *   get:
+ *     summary: Get global API usage stats
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Usage stats returned successfully
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden — admin access required
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /api/admin/stats/endpoints:
+ *   get:
+ *     summary: Get request count for each API endpoint
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Endpoint stats returned successfully
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /api/admin/user/{id}:
+ *   get:
+ *     summary: Get info about a specific user
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           example: 5
+ *     responses:
+ *       200:
+ *         description: User details returned successfully
+ *       400:
+ *         description: Invalid user ID
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /api/admin/user/{id}/reset-api-calls:
+ *   patch:
+ *     summary: Reset a user's API call count
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: API calls reset successfully
+ *       400:
+ *         description: Invalid ID
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
  * Admin Routes Class
  * Handles all admin-related routes
  */

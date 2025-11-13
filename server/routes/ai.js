@@ -3,6 +3,49 @@ import authMiddleware from "../middleware/auth.js";
 import User from "../models/User.js";
 
 /**
+ * @swagger
+ * tags:
+ *   name: AI
+ *   description: AI/ML model endpoints using TinyLlama (HuggingFace)
+ */
+
+/**
+ * @swagger
+ * /api/generate:
+ *   post:
+ *     summary: Generate text using the TinyLlama model
+ *     tags: [AI]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [prompt]
+ *             properties:
+ *               model:
+ *                 type: string
+ *                 example: tinyllama
+ *               prompt:
+ *                 type: string
+ *                 example: "Write a haiku about the ocean."
+ *               options:
+ *                 type: object
+ *                 example: { "temperature": 0.7 }
+ *     responses:
+ *       200:
+ *         description: AI-generated text (streamed response)
+ *       400:
+ *         description: Bad request — missing prompt or invalid payload
+ *       401:
+ *         description: Unauthorized — missing/invalid JWT
+ *       500:
+ *         description: AI inference error or model failure
+ */
+
+/**
  * AI Routes Class
  */
 class AI {

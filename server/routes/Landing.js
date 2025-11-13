@@ -3,6 +3,34 @@ import LandingController from "../controllers/Landing.js";
 import authMiddleware from "../middleware/auth.js";
 
 /**
+ * @swagger
+ * tags:
+ *   name: Landing
+ *   description: Landing page endpoint (role-based content)
+ */
+
+/**
+ * @swagger
+ * /api/landing:
+ *   get:
+ *     summary: Get landing page content depending on user role
+ *     tags: [Landing]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Landing page data returned successfully
+ *       400:
+ *         description: Bad request or missing required fields
+ *       401:
+ *         description: Unauthorized — missing or invalid authentication token
+ *       403:
+ *         description: Forbidden — user role does not have access
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
  * Landing Routes Class
  * Handles landing page routes
  */

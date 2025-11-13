@@ -9,6 +9,7 @@ import Auth from "./routes/auth.js";
 import Landing from "./routes/Landing.js";
 import DefaultAdmin from "./utils/defaultAdmin.js";
 import Database from "./db/Database.js";
+import { setupSwagger } from "./config/swagger.js";
 
 /**
  * Express Application Class
@@ -18,6 +19,7 @@ class App {
     this.app = express();
     this.port = process.env.PORT || 4000;
     this.initializeMiddleware();
+    setupSwagger(this.app);  
     this.initializeDatabase();
     this.initializeRoutes();
     this.initializeErrorHandling();
