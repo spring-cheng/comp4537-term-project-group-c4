@@ -6,6 +6,7 @@ import AdminService from "./services/Admin.js";
 import Admin from "./routes/admin.js";
 import AI from "./routes/ai.js";
 import Auth from "./routes/auth.js";
+import Dashboard from "./routes/Dashboard.js";
 import Landing from "./routes/Landing.js";
 import DefaultAdmin from "./utils/defaultAdmin.js";
 import Database from "./db/Database.js";
@@ -19,7 +20,7 @@ class App {
     this.app = express();
     this.port = process.env.PORT || 4000;
     this.initializeMiddleware();
-    setupSwagger(this.app);  
+    setupSwagger(this.app);
     this.initializeDatabase();
     this.initializeRoutes();
     this.initializeErrorHandling();
@@ -80,12 +81,14 @@ class App {
     // Initialize route classes
     const authRoutes = new Auth();
     const landingRoutes = new Landing();
+    const dashboardRoutes = new Dashboard();
     const adminRoutes = new Admin();
     const aiRoutes = new AI();
 
     // Register API routes
     this.app.use("/api/auth", authRoutes.getRouter());
     this.app.use("/api/landing", landingRoutes.getRouter());
+    this.app.use("/api/dashboard", dashboardRoutes.getRouter());
     this.app.use("/api/admin", adminRoutes.getRouter());
     this.app.use("/api", aiRoutes.getRouter());
   }
