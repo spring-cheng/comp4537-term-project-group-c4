@@ -1,4 +1,5 @@
 import { MESSAGES } from "./lang/messages/en/user.js";
+import { API_ENDPOINTS } from "./config.js";
 
 const token = localStorage.getItem("jwt");
 
@@ -51,7 +52,7 @@ generateBtn.addEventListener("click", async () => {
   responseContainer.style.display = "block";
 
   try {
-    const response = await fetch("http://localhost:4000/api/generate", {
+    const response = await fetch(API_ENDPOINTS.AI.GENERATE, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

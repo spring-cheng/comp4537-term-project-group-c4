@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://localhost:4000/api';
+import { API_ENDPOINTS } from './config.js';
+
 let MESSAGES = {};
 
 async function loadMessages() {
@@ -13,11 +14,11 @@ async function loadMessages() {
 function showMessage(elementId, message, isError = false) {
   const messageEl = document.getElementById(elementId);
   if (!messageEl) return;
-  
+
   messageEl.textContent = message;
   messageEl.className = isError ? 'message error' : 'message success';
   messageEl.style.display = 'block';
-  
+
   setTimeout(() => {
     messageEl.style.display = 'none';
   }, 5000);
@@ -46,7 +47,7 @@ async function handleRegistration(event) {
   submitBtn.textContent = MESSAGES.registering;
 
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+    const response = await fetch(API_ENDPOINTS.AUTH.REGISTER, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -100,7 +101,7 @@ async function handleLogin(event) {
   submitBtn.textContent = MESSAGES.loggingIn;
 
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    const response = await fetch(API_ENDPOINTS.AUTH.LOGIN, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),

@@ -1,6 +1,6 @@
 import { MESSAGES } from "./lang/messages/en/user.js";
+import { API_ENDPOINTS } from "./config.js";
 
-const API_URL = "http://localhost:4000";
 const token = localStorage.getItem("jwt");
 
 // redirect unauthenticated users
@@ -22,7 +22,7 @@ userEmailEl.textContent = MESSAGES.loading;
 // load user data
 async function loadUserData() {
   try {
-    const res = await fetch(`${API_URL}/api/dashboard`, {
+    const res = await fetch(API_ENDPOINTS.DASHBOARD, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) throw new Error(`Failed to fetch user data: ${res.status}`);

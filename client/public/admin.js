@@ -1,6 +1,6 @@
 import { MESSAGES } from "./lang/messages/en/user.js";
+import { API_ENDPOINTS } from "./config.js";
 
-const API_URL = "http://localhost:4000";
 const token = localStorage.getItem("jwt");
 const role = localStorage.getItem("role");
 
@@ -39,7 +39,7 @@ document.getElementById("logoutBtn").textContent = MESSAGES.logoutButton;
 // usage statistics
 async function loadUsage() {
   try {
-    const res = await fetch(`${API_URL}/api/admin/usage`, {
+    const res = await fetch(API_ENDPOINTS.ADMIN.USAGE, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) {
@@ -61,7 +61,7 @@ async function loadUsage() {
 // users list
 async function loadUsers() {
   try {
-    const res = await fetch(`${API_URL}/api/admin/users`, {
+    const res = await fetch(API_ENDPOINTS.ADMIN.USERS, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) {
@@ -100,7 +100,7 @@ async function loadUsers() {
 // endpoint stats list
 async function loadEndpoints() {
   try {
-    const res = await fetch(`${API_URL}/api/admin/stats/endpoints`, {
+    const res = await fetch(API_ENDPOINTS.ADMIN.ENDPOINT_STATS, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) {
@@ -139,7 +139,7 @@ async function resetCalls(userId) {
   if (!confirm(MESSAGES.admin.resetConfirm)) return;
 
   try {
-    const res = await fetch(`${API_URL}/api/admin/user/${userId}/reset-api-calls`, {
+    const res = await fetch(API_ENDPOINTS.ADMIN.RESET_API_CALLS(userId), {
       method: "PATCH",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -161,7 +161,7 @@ async function resetCalls(userId) {
 // Verify user is admin before loading data
 async function verifyAdminAccess() {
   try {
-    const res = await fetch(`${API_URL}/api/auth/me`, {
+    const res = await fetch(API_ENDPOINTS.AUTH.ME, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) {
