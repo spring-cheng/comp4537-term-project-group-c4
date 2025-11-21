@@ -38,6 +38,19 @@ class App {
       allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key']
     }));
     this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
+    this.app.use((req, res, next) => {
+      req.cookies = {};
+      if (req.headers.cookie) {
+        req.headers.cookie.split(';').forEach(cookie => {
+          const parts = cookie.trim().split('=');
+          if (parts.length === 2) {
+            req.cookies[parts[0]] = decodeURIComponent(parts[1]);
+          }
+        });
+      }
+      next();
+    });
 
     // Track API endpoint usage counts
     this.app.use(async (req, res, next) => {

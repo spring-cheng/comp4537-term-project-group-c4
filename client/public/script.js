@@ -50,6 +50,7 @@ async function handleRegistration(event) {
     const response = await fetch(API_ENDPOINTS.AUTH.REGISTER, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({ email, password }),
     });
 
@@ -62,8 +63,7 @@ async function handleRegistration(event) {
     } else {
       showMessage('message', data.message || MESSAGES.registrationSuccess, false);
 
-      if (data.token) {
-        localStorage.setItem('jwt', data.token);
+      if (data.user) {
         localStorage.setItem('role', data.user.role);
       }
 
@@ -104,6 +104,7 @@ async function handleLogin(event) {
     const response = await fetch(API_ENDPOINTS.AUTH.LOGIN, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include', // Include cookies (httpOnly cookie will be set)
       body: JSON.stringify({ email, password }),
     });
 
@@ -116,8 +117,8 @@ async function handleLogin(event) {
     } else {
       showMessage('message', data.message || MESSAGES.loginSuccess, false);
 
-      if (data.token) {
-        localStorage.setItem('jwt', data.token);
+      // Store role in localStorage for client-side checks (token is in httpOnly cookie)
+      if (data.user) {
         localStorage.setItem('role', data.user.role);
       }
 

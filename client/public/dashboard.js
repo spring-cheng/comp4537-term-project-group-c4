@@ -1,10 +1,8 @@
 import { MESSAGES } from "./lang/messages/en/user.js";
 import { API_ENDPOINTS } from "./config.js";
 
-const token = localStorage.getItem("jwt");
-
-// redirect unauthenticated users
-if (!token) window.location.href = "/login";
+// Check authentication by trying to fetch user data
+// Token is stored in httpOnly cookie, so we can't check it directly
 
 // DOM ref's
 const userEmailEl = document.getElementById("user-email");
@@ -23,13 +21,27 @@ userEmailEl.textContent = MESSAGES.loading;
 async function loadUserData() {
   try {
     const res = await fetch(API_ENDPOINTS.DASHBOARD, {
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: 'include', // Include httpOnly cookie
     });
-    if (!res.ok) throw new Error(`Failed to fetch user data: ${res.status}`);
+
+    if (!res.ok) {
+      if (res.status === 401 || res.status === 403) {
+        // Not authenticated, redirect to login
+        window.location.href = "/login";
+        return;
+      }
+      throw new Error(`Failed to fetch user data: ${res.status}`);
+    }
+
     const data = await res.json();
 
     userEmailEl.textContent = data.user.email || MESSAGES.notAvailable;
     totalApiCallsEl.textContent = data.api_usage?.api_calls ?? data.user.api_calls ?? 0;
+
+    // Store role for client-side checks
+    if (data.user && data.user.role) {
+      localStorage.setItem('role', data.user.role);
+    }
   } catch (err) {
     console.error(err);
     userEmailEl.textContent = MESSAGES.errorLoadingData;
@@ -38,8 +50,19 @@ async function loadUserData() {
 }
 
 // logout handler
-document.getElementById("logoutBtn").addEventListener("click", () => {
-  localStorage.removeItem("jwt");
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  try {
+    // Call logout endpoint to clear httpOnly cookie
+    await fetch(API_ENDPOINTS.AUTH.LOGOUT, {
+      method: 'POST',
+      credentials: 'include',
+    });
+  } catch (err) {
+    console.error('Logout error:', err);
+  }
+
+  // Clear localStorage
+  localStorage.removeItem("role");
   window.location.href = "/login";
 });
 

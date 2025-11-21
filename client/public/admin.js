@@ -1,17 +1,6 @@
 import { MESSAGES } from "./lang/messages/en/user.js";
 import { API_ENDPOINTS } from "./config.js";
 
-const token = localStorage.getItem("jwt");
-const role = localStorage.getItem("role");
-
-// redirect non-admins or unauthenticated users
-if (!token) {
-  window.location.href = "/login";
-} else if (role !== "admin") {
-  alert(MESSAGES.admin.accessDenied);
-  window.location.href = "/dashboard";
-}
-
 // DOM ref's
 const usersTable = document.querySelector("#users-table tbody");
 const totalUsersEl = document.getElementById("total-users");
@@ -40,7 +29,7 @@ document.getElementById("logoutBtn").textContent = MESSAGES.logoutButton;
 async function loadUsage() {
   try {
     const res = await fetch(API_ENDPOINTS.ADMIN.USAGE, {
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: 'include', // Include httpOnly cookie
     });
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
@@ -62,7 +51,7 @@ async function loadUsage() {
 async function loadUsers() {
   try {
     const res = await fetch(API_ENDPOINTS.ADMIN.USERS, {
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: 'include', // Include httpOnly cookie
     });
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
@@ -101,7 +90,7 @@ async function loadUsers() {
 async function loadEndpoints() {
   try {
     const res = await fetch(API_ENDPOINTS.ADMIN.ENDPOINT_STATS, {
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: 'include', // Include httpOnly cookie
     });
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
@@ -141,7 +130,7 @@ async function resetCalls(userId) {
   try {
     const res = await fetch(API_ENDPOINTS.ADMIN.RESET_API_CALLS(userId), {
       method: "PATCH",
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: 'include', // Include httpOnly cookie
     });
 
     if (res.ok) {
@@ -162,11 +151,17 @@ async function resetCalls(userId) {
 async function verifyAdminAccess() {
   try {
     const res = await fetch(API_ENDPOINTS.AUTH.ME, {
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: 'include', // Include httpOnly cookie
     });
+
     if (!res.ok) {
+      if (res.status === 401 || res.status === 403) {
+        window.location.href = "/login";
+        return false;
+      }
       throw new Error(MESSAGES.admin.failedToVerifyUser);
     }
+
     const data = await res.json();
 
     if (data.user && data.user.role !== "admin") {
@@ -175,7 +170,7 @@ async function verifyAdminAccess() {
       return false;
     }
 
-    // Update role in localStorage if needed
+    // Update role in localStorage for client-side checks
     if (data.user && data.user.role) {
       localStorage.setItem("role", data.user.role);
     }
@@ -189,8 +184,18 @@ async function verifyAdminAccess() {
   }
 }
 
-document.getElementById("logoutBtn").addEventListener("click", () => {
-  localStorage.removeItem("jwt");
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  try {
+    // Call logout endpoint to clear httpOnly cookie
+    await fetch(API_ENDPOINTS.AUTH.LOGOUT, {
+      method: 'POST',
+      credentials: 'include',
+    });
+  } catch (err) {
+    console.error('Logout error:', err);
+  }
+
+  // Clear localStorage
   localStorage.removeItem("role");
   window.location.href = "/login";
 });

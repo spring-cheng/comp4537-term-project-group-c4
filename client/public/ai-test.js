@@ -1,10 +1,7 @@
 import { MESSAGES } from "./lang/messages/en/user.js";
 import { API_ENDPOINTS } from "./config.js";
 
-const token = localStorage.getItem("jwt");
-
-// redirect unauthenticated users
-if (!token) window.location.href = "/login";
+// Authentication will be checked via API calls (token is in httpOnly cookie)
 
 const promptInput = document.getElementById("prompt");
 const generateBtn = document.getElementById("generateBtn");
@@ -56,8 +53,8 @@ generateBtn.addEventListener("click", async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
+      credentials: 'include', // Include httpOnly cookie
       body: JSON.stringify({
         model: "tinyllama",
         prompt: prompt,

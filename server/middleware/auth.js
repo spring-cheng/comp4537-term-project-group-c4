@@ -11,13 +11,14 @@ class Auth {
   }
 
   /**
-   * Verify JWT token
+   * Verify JWT token from httpOnly cookie
+   * Only supports httpOnly cookies for security
    * @returns {Function} Express middleware function
    */
   authenticateToken() {
     return (req, res, next) => {
-      const authHeader = req.headers["authorization"];
-      const token = authHeader && authHeader.split(" ")[1]; // Bearer TOKEN
+      // Get token from httpOnly cookie only
+      const token = req.cookies?.authToken;
 
       if (!token) {
         return res.status(401).json({
@@ -77,9 +78,8 @@ class Auth {
         });
       }
 
-      // Optionally verify JWT token if provided (for user identification)
-      const authHeader = req.headers["authorization"];
-      const token = authHeader && authHeader.split(" ")[1]; // Bearer TOKEN
+      // Optionally verify JWT token from httpOnly cookie (for user identification)
+      const token = req.cookies?.authToken;
 
       if (token) {
         try {

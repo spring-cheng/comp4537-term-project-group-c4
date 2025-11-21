@@ -21,9 +21,19 @@ class Auth {
 
       const result = await this.authService.register(email, password);
 
+      // Set httpOnly cookie with JWT token
+      const cookieOptions = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+        sameSite: 'lax', // CSRF protection
+        maxAge: 2 * 60 * 60 * 1000, // 2 hours
+        path: '/', // Available for all paths
+      };
+
+      res.cookie('authToken', result.token, cookieOptions);
+
       res.status(201).json({
         message: userMessages.REGISTER_SUCCESS,
-        token: result.token,
         user: result.user,
       });
     } catch (error) {
@@ -47,10 +57,21 @@ class Auth {
 
       const result = await this.authService.login(email, password);
 
+      // Set httpOnly cookie with JWT token
+      const cookieOptions = {
+        httpOnly: true, // Prevents JavaScript access (XSS protection)
+        secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+        sameSite: 'lax', // CSRF protection
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+        path: '/', // Available for all paths
+      };
+
+      res.cookie('authToken', result.token, cookieOptions);
+
       res.json({
         message: userMessages.LOGIN_SUCCESS,
-        token: result.token,
         user: result.user,
+        // Don't send token in response body for security (it's in httpOnly cookie)
       });
     } catch (error) {
       console.error("Login error:", error);
@@ -90,6 +111,14 @@ class Auth {
    * @param {Object} res - Express response object
    */
   logout(req, res) {
+    // Clear the httpOnly cookie
+    res.clearCookie('authToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+    });
+
     res.json({
       message: userMessages.LOGOUT_SUCCESS,
     });
