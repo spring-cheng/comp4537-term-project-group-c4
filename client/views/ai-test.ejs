@@ -4,6 +4,17 @@
         <h1 class="page-title" id="ai-test-title">Test TinyLlama Model</h1>
 
         <section class="stats-section">
+            <!-- API Usage Display -->
+            <div id="apiUsage" class="api-usage-container">
+                <h3 id="api-usage-title" class="api-usage-title">API Usage</h3>
+                <p id="apiUsageText" class="api-usage-text">Loading...</p>
+            </div>
+
+            <!-- Warning Display -->
+            <div id="warningContainer" class="warning-container">
+                <p id="warningText" class="warning-text"></p>
+            </div>
+
             <div class="form-group">
                 <label for="prompt" id="prompt-label">Enter your prompt:</label>
                 <textarea id="prompt" rows="4"

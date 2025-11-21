@@ -251,11 +251,60 @@ button:active {
   background: #d93636;
 }
 
+/* --- AI Test Page --- */
+.api-usage-container {
+  background: #e8f4f8;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.api-usage-title {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.api-usage-text {
+  margin: 0;
+  color: #666;
+}
+
+.warning-container {
+  display: none;
+  background: #fff3cd;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #ffc107;
+}
+
+.warning-container.warning-limit-reached {
+  background: #f8d7da;
+  border-left-color: #dc3545;
+}
+
+.warning-container.warning-low-calls {
+  background: #fff3cd;
+  border-left-color: #ffc107;
+}
+
+.warning-text {
+  margin: 0;
+  color: #856404;
+  font-weight: 500;
+}
+
+.warning-container.warning-limit-reached .warning-text {
+  color: #721c24;
+}
+
 @media (max-width: 768px) {
   .stats-grid {
     flex-direction: column;
     align-items: center;
   }
+
   .admin-container {
     padding: 2rem 1.5rem 3rem;
   }

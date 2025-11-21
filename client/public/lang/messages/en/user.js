@@ -93,5 +93,12 @@ export const MESSAGES = {
   aiTest: {
     pleaseEnterPrompt: "Please enter a prompt",
     response: "Response:",
+    apiUsage: "API Usage",
+    unableToLoadUsage: "Unable to load API usage",
+    adminUnlimitedCalls: "Admin: Unlimited API calls (Used: {apiCalls})",
+    apiCallsFormat: "API Calls: {apiCalls} / {limit} (Remaining: {remaining})",
+    limitReachedWarning: "⚠️ You have reached your free API call limit of {limit}. Requests will still be processed, but please consider upgrading for continued service.",
+    lowCallsWarning: "⚠️ Warning: You have {remaining} free API call{plural} remaining.",
+    warningPrefix: "⚠️ ",
   },
 };
