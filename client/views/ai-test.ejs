@@ -1,24 +1,22 @@
 <%- include('partials/header', { title: "AI Test" }) %>
 
     <div class="admin-container">
-        <h1 class="page-title">Test TinyLlama Model</h1>
+        <h1 class="page-title" id="ai-test-title">Test TinyLlama Model</h1>
 
         <section class="stats-section">
             <div class="form-group">
-                <label for="prompt">Enter your prompt:</label>
-                <textarea
-                    id="prompt"
-                    rows="4"
-                    placeholder="Type your message here..."
-                    style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid #ccc; font-size: 0.95rem; font-family: inherit;"
-                ></textarea>
+                <label for="prompt" id="prompt-label">Enter your prompt:</label>
+                <textarea id="prompt" rows="4"
+                    style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid #ccc; font-size: 0.95rem; font-family: inherit;"></textarea>
             </div>
 
             <button id="generateBtn" style="margin-top: 1rem;">Generate Response</button>
 
             <div id="responseContainer" style="margin-top: 2rem; display: none;">
-                <h3 style="color: #0074d9; margin-bottom: 1rem;">Response:</h3>
-                <div id="response" style="background: white; padding: 1.5rem; border-radius: 10px; text-align: left; white-space: pre-wrap; min-height: 100px; box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);"></div>
+                <h3 id="response-label" style="color: #0074d9; margin-bottom: 1rem;">Response:</h3>
+                <div id="response"
+                    style="background: white; padding: 1.5rem; border-radius: 10px; text-align: left; white-space: pre-wrap; min-height: 100px; box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);">
+                </div>
             </div>
 
             <div id="message" class="message" style="margin-top: 1rem;"></div>

@@ -1,66 +1,68 @@
 <%- include('partials/header', { title: "Admin Dashboard" }) %>
 
-<div class="admin-container">
-  <h1 class="page-title">Admin Dashboard</h1>
+  <div class="admin-container">
+    <h1 class="page-title" id="admin-title">Admin Dashboard</h1>
 
-  <section class="stats-section">
-    <h2>System Statistics</h2>
-    <div class="stats-grid">
-      <div class="stat-card">
-        <h3>Total Users</h3>
-        <p id="total-users">0</p>
+    <section class="stats-section">
+      <h2 id="system-stats">System Statistics</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3 id="total-users-label">Total Users</h3>
+          <p id="total-users">0</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="total-calls-label">Total API Calls</h3>
+          <p id="total-calls">0</p>
+        </div>
       </div>
-      <div class="stat-card">
-        <h3>Total API Calls</h3>
-        <p id="total-calls">0</p>
+    </section>
+
+    <section class="users-section">
+      <h2 id="all-users">All Users</h2>
+      <div class="table-container">
+        <table id="users-table">
+          <thead>
+            <tr>
+              <th id="th-id">ID</th>
+              <th id="th-email">Email</th>
+              <th id="th-role">Role</th>
+              <th id="th-api-calls">API Calls</th>
+              <th id="th-actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="5" class="loading" id="users-loading">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="users-section">
-    <h2>All Users</h2>
-    <div class="table-container">
-      <table id="users-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>API Calls</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td colspan="5" class="loading">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+    <br>
+    <section class="users-section">
+      <h2 id="endpoint-stats">API Endpoint Stats</h2>
+      <div class="table-container">
+        <table id="endpoints-table">
+          <thead>
+            <tr>
+              <th id="th-method">Method</th>
+              <th id="th-endpoint">Endpoint</th>
+              <th id="th-requests">Requests</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="3" class="loading" id="endpoints-loading">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-  <br>
-  <section class="users-section">
-    <h2>API Endpoint Stats</h2>
-    <div class="table-container">
-      <table id="endpoints-table">
-        <thead>
-          <tr>
-            <th>Method</th>
-            <th>Endpoint</th>
-            <th>Requests</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="3" class="loading">Loading...</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+  </div>
 
-  <button id="logoutBtn" class="logout-btn">Logout</button>
-</div>
+  <script type="module" src="admin.js"></script>
 
-<script src="admin.js"></script>
-
-<%- include('partials/footer') %>
+  <%- include('partials/footer') %>

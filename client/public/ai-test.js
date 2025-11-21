@@ -12,6 +12,14 @@ const responseDiv = document.getElementById("response");
 const messageDiv = document.getElementById("message");
 const backBtn = document.getElementById("backBtn");
 
+// Set text content from messages
+document.getElementById("ai-test-title").textContent = MESSAGES.pageTitleAiTest;
+document.getElementById("prompt-label").textContent = MESSAGES.promptLabel;
+document.getElementById("prompt").placeholder = MESSAGES.promptPlaceholder;
+document.getElementById("generateBtn").textContent = MESSAGES.generateResponse;
+document.getElementById("response-label").textContent = MESSAGES.aiTest.response;
+document.getElementById("backBtn").textContent = MESSAGES.backToDashboard;
+
 // back to dashboard
 backBtn.addEventListener("click", () => {
   window.location.href = "/dashboard";
@@ -38,7 +46,7 @@ generateBtn.addEventListener("click", async () => {
   }
 
   generateBtn.disabled = true;
-  generateBtn.textContent = MESSAGES.aiTest.generating;
+  generateBtn.textContent = MESSAGES.generating;
   responseDiv.textContent = "";
   responseContainer.style.display = "block";
 
@@ -57,7 +65,7 @@ generateBtn.addEventListener("click", async () => {
     });
 
     if (!response.ok) {
-      throw new Error(`${MESSAGES.aiTest.apiError}${response.status}`);
+      throw new Error(`${MESSAGES.apiError}${response.status}`);
     }
 
     // read streaming response
@@ -83,13 +91,13 @@ generateBtn.addEventListener("click", async () => {
       }
     }
 
-    showMessage(MESSAGES.aiTest.responseSuccess, false);
+    showMessage(MESSAGES.responseSuccess, false);
   } catch (error) {
     console.error("Error:", error);
-    showMessage(MESSAGES.aiTest.responseFailed + error.message, true);
-    responseDiv.textContent = MESSAGES.aiTest.errorGenerating;
+    showMessage(MESSAGES.responseFailed + error.message, true);
+    responseDiv.textContent = MESSAGES.errorGenerating;
   } finally {
     generateBtn.disabled = false;
-    generateBtn.textContent = MESSAGES.aiTest.generateResponse;
+    generateBtn.textContent = MESSAGES.generateResponse;
   }
 });

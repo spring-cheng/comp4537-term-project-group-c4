@@ -1,12 +1,32 @@
 export const MESSAGES = {
+  // Page Titles
   title: "User Registration",
+  loginTitle: "Login",
+  dashboardTitle: "User Dashboard",
+  adminTitle: "Admin Dashboard",
+  aiTestTitle: "AI Test",
+  pageTitleAiTest: "Test TinyLlama Model",
+
+  // Form Labels
   emailLabel: "Email Address",
   passwordLabel: "Password (min 3 characters)",
   confirmPasswordLabel: "Confirm Password",
+  promptLabel: "Enter your prompt:",
+  promptPlaceholder: "Type your message here...",
+
+  // Buttons
   registerButton: "Register",
-  messageDiv: "",
-  loginTitle: "Login",
   loginButton: "Login",
+  logoutButton: "Logout",
+  generateResponse: "Generate Response",
+  testAiModel: "Test AI Model",
+  backToDashboard: "Back to Dashboard",
+  resetButton: "Reset",
+
+  // Empty/Default
+  messageDiv: "",
+  notAvailable: "N/A",
+  loading: "Loading...",
 
   // Validation messages
   fillAllFields: "Please fill in all fields",
@@ -15,24 +35,63 @@ export const MESSAGES = {
   // Button states
   registering: "Registering...",
   loggingIn: "Logging in...",
+  generating: "Generating...",
 
   // Success messages
   registrationSuccess: "Registration successful! Redirecting...",
   loginSuccess: "Login successful! Redirecting...",
+  responseSuccess: "Response generated successfully!",
+  resetSuccess: "API calls reset successfully!",
 
   // Error messages
   registrationFailed: "Registration failed",
   loginFailed: "Login failed",
   networkError: "Network error. Please check if server is running",
+  errorLoadingData: "Error loading data",
+  error: "Error",
+  errorGenerating: "Error generating response.",
+  responseFailed: "Failed to generate response: ",
+  apiError: "API error: ",
 
-  // AI Test messages
+  // Dashboard
+  dashboard: {
+    yourInformation: "Your Information",
+    email: "Email",
+    totalApiCalls: "Total API Calls",
+  },
+
+  // Admin
+  admin: {
+    accessDenied: "Access denied. Admin privileges required.",
+    errorVerifyingAccess: "Error verifying access. Please try logging in again.",
+    failedToLoadUsage: "Failed to load usage statistics: ",
+    failedToVerifyUser: "Failed to verify user",
+    systemStatistics: "System Statistics",
+    totalUsers: "Total Users",
+    totalApiCalls: "Total API Calls",
+    allUsers: "All Users",
+    apiEndpointStats: "API Endpoint Stats",
+    noUsersFound: "No users found",
+    errorLoadingUsers: "Error loading users: ",
+    noEndpointStats: "No endpoint statistics available",
+    errorLoadingEndpoints: "Error loading endpoint stats: ",
+    resetConfirm: "Reset API calls for this user?",
+    resetError: "Error: ",
+    tableHeaders: {
+      id: "ID",
+      email: "Email",
+      role: "Role",
+      apiCalls: "API Calls",
+      actions: "Actions",
+      method: "Method",
+      endpoint: "Endpoint",
+      requests: "Requests",
+    },
+  },
+
+  // AI Test
   aiTest: {
     pleaseEnterPrompt: "Please enter a prompt",
-    generating: "Generating...",
-    generateResponse: "Generate Response",
-    responseSuccess: "Response generated successfully!",
-    responseFailed: "Failed to generate response: ",
-    errorGenerating: "Error generating response.",
-    apiError: "API error: ",
+    response: "Response:",
   },
 };

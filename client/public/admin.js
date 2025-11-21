@@ -1,3 +1,5 @@
+import { MESSAGES } from "./lang/messages/en/user.js";
+
 const API_URL = "http://localhost:4000";
 const token = localStorage.getItem("jwt");
 const role = localStorage.getItem("role");
@@ -6,7 +8,7 @@ const role = localStorage.getItem("role");
 if (!token) {
   window.location.href = "/login";
 } else if (role !== "admin") {
-  alert("Access denied. Admin privileges required.");
+  alert(MESSAGES.admin.accessDenied);
   window.location.href = "/dashboard";
 }
 
@@ -14,6 +16,25 @@ if (!token) {
 const usersTable = document.querySelector("#users-table tbody");
 const totalUsersEl = document.getElementById("total-users");
 const totalCallsEl = document.getElementById("total-calls");
+
+// Set text content from messages
+document.getElementById("admin-title").textContent = MESSAGES.adminTitle;
+document.getElementById("system-stats").textContent = MESSAGES.admin.systemStatistics;
+document.getElementById("total-users-label").textContent = MESSAGES.admin.totalUsers;
+document.getElementById("total-calls-label").textContent = MESSAGES.admin.totalApiCalls;
+document.getElementById("all-users").textContent = MESSAGES.admin.allUsers;
+document.getElementById("endpoint-stats").textContent = MESSAGES.admin.apiEndpointStats;
+document.getElementById("th-id").textContent = MESSAGES.admin.tableHeaders.id;
+document.getElementById("th-email").textContent = MESSAGES.admin.tableHeaders.email;
+document.getElementById("th-role").textContent = MESSAGES.admin.tableHeaders.role;
+document.getElementById("th-api-calls").textContent = MESSAGES.admin.tableHeaders.apiCalls;
+document.getElementById("th-actions").textContent = MESSAGES.admin.tableHeaders.actions;
+document.getElementById("th-method").textContent = MESSAGES.admin.tableHeaders.method;
+document.getElementById("th-endpoint").textContent = MESSAGES.admin.tableHeaders.endpoint;
+document.getElementById("th-requests").textContent = MESSAGES.admin.tableHeaders.requests;
+document.getElementById("users-loading").textContent = MESSAGES.loading;
+document.getElementById("endpoints-loading").textContent = MESSAGES.loading;
+document.getElementById("logoutBtn").textContent = MESSAGES.logoutButton;
 
 // usage statistics
 async function loadUsage() {
@@ -31,9 +52,9 @@ async function loadUsage() {
     totalCallsEl.textContent = data.total_api_calls ?? 0;
   } catch (err) {
     console.error("Error loading usage:", err);
-    totalUsersEl.textContent = "Error";
-    totalCallsEl.textContent = "Error";
-    alert("Failed to load usage statistics: " + err.message);
+    totalUsersEl.textContent = MESSAGES.error;
+    totalCallsEl.textContent = MESSAGES.error;
+    alert(MESSAGES.admin.failedToLoadUsage + err.message);
   }
 }
 
@@ -51,7 +72,7 @@ async function loadUsers() {
 
     const { users } = data;
     if (!users || users.length === 0) {
-      usersTable.innerHTML = '<tr><td colspan="5">No users found</td></tr>';
+      usersTable.innerHTML = `<tr><td colspan="5">${MESSAGES.admin.noUsersFound}</td></tr>`;
       return;
     }
 
@@ -64,7 +85,7 @@ async function loadUsers() {
           <td>${u.role}</td>
           <td>${u.api_calls ?? 0}</td>
           <td>
-            <button class="reset-btn" onclick="resetCalls(${u.id})">Reset</button>
+            <button class="reset-btn" onclick="resetCalls(${u.id})">${MESSAGES.resetButton}</button>
           </td>
         </tr>`
       )
@@ -72,7 +93,7 @@ async function loadUsers() {
   } catch (err) {
     console.error("Error loading users:", err);
     usersTable.innerHTML =
-      '<tr><td colspan="5" class="error">Error loading users: ' + err.message + '</td></tr>';
+      `<tr><td colspan="5" class="error">${MESSAGES.admin.errorLoadingUsers}${err.message}</td></tr>`;
   }
 }
 
@@ -91,7 +112,7 @@ async function loadEndpoints() {
     const tableBody = document.querySelector("#endpoints-table tbody");
 
     if (!data.stats || data.stats.length === 0) {
-      tableBody.innerHTML = '<tr><td colspan="3">No endpoint statistics available</td></tr>';
+      tableBody.innerHTML = `<tr><td colspan="3">${MESSAGES.admin.noEndpointStats}</td></tr>`;
       return;
     }
 
@@ -109,13 +130,13 @@ async function loadEndpoints() {
     console.error("Error loading endpoints:", err);
     const tableBody = document.querySelector("#endpoints-table tbody");
     tableBody.innerHTML =
-      '<tr><td colspan="3" class="error">Error loading endpoint stats: ' + err.message + '</td></tr>';
+      `<tr><td colspan="3" class="error">${MESSAGES.admin.errorLoadingEndpoints}${err.message}</td></tr>`;
   }
 }
 
 // reset a user's API call count
 async function resetCalls(userId) {
-  if (!confirm("Reset API calls for this user?")) return;
+  if (!confirm(MESSAGES.admin.resetConfirm)) return;
 
   try {
     const res = await fetch(`${API_URL}/api/admin/user/${userId}/reset-api-calls`, {
@@ -124,16 +145,16 @@ async function resetCalls(userId) {
     });
 
     if (res.ok) {
-      alert("API calls reset successfully!");
+      alert(MESSAGES.resetSuccess);
       loadUsers();
       loadUsage();
     } else {
       const errData = await res.json();
-      alert("Error: " + errData.error);
+      alert(MESSAGES.admin.resetError + errData.error);
     }
   } catch (err) {
     console.error(err);
-    alert("Network error");
+    alert(MESSAGES.networkError);
   }
 }
 
@@ -144,12 +165,12 @@ async function verifyAdminAccess() {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) {
-      throw new Error("Failed to verify user");
+      throw new Error(MESSAGES.admin.failedToVerifyUser);
     }
     const data = await res.json();
 
     if (data.user && data.user.role !== "admin") {
-      alert("Access denied. Admin privileges required.");
+      alert(MESSAGES.admin.accessDenied);
       window.location.href = "/dashboard";
       return false;
     }
@@ -162,7 +183,7 @@ async function verifyAdminAccess() {
     return true;
   } catch (err) {
     console.error("Error verifying admin access:", err);
-    alert("Error verifying access. Please try logging in again.");
+    alert(MESSAGES.admin.errorVerifyingAccess);
     window.location.href = "/login";
     return false;
   }
