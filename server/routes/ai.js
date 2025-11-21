@@ -14,10 +14,10 @@ import { userMessages } from "../lang/en/messages.js";
  * @swagger
  * /api/generate:
  *   post:
- *     summary: Generate text using the TinyLlama model
+ *     summary: Generate text using the TinyLlama model. Tracks API usage and enforces 20 free API call limit per user (admin users have unlimited calls).
  *     tags: [AI]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -28,20 +28,44 @@ import { userMessages } from "../lang/en/messages.js";
  *             properties:
  *               model:
  *                 type: string
+ *                 default: tinyllama
  *                 example: tinyllama
  *               prompt:
  *                 type: string
+ *                 description: The text prompt for AI generation
  *                 example: "Write a haiku about the ocean."
  *               options:
  *                 type: object
- *                 example: { "temperature": 0.7 }
+ *                 description: Generation options (temperature, etc.)
+ *                 example: { "temperature": 0.5 }
  *     responses:
  *       200:
- *         description: AI-generated text (streamed response)
+ *         description: AI-generated text (streamed response). May include warning message if API call limit is reached or about to be reached. Service continues even after limit is reached.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 warning:
+ *                   type: string
+ *                   description: Warning message if API call limit is reached or about to be reached (sent first in stream)
+ *                   example: "Warning: You have reached your free API call limit of 20. This request will still be processed, but please consider upgrading for continued service."
+ *                 limit_reached:
+ *                   type: boolean
+ *                   description: Whether the free API call limit has been reached
+ *                 api_calls:
+ *                   type: integer
+ *                   description: Current number of API calls made by the user
+ *                 limit:
+ *                   type: integer
+ *                   description: Free API call limit (default 20)
+ *                 response:
+ *                   type: string
+ *                   description: AI-generated text response (streamed)
  *       400:
  *         description: Bad request — missing prompt or invalid payload
  *       401:
- *         description: Unauthorized — missing/invalid JWT
+ *         description: Unauthorized — missing/invalid JWT token in httpOnly cookie
  *       500:
  *         description: AI inference error or model failure
  */

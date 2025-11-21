@@ -26,13 +26,40 @@ import authMiddleware from "../middleware/auth.js";
  *             properties:
  *               email:
  *                 type: string
+ *                 format: email
  *                 example: test@example.com
  *               password:
  *                 type: string
+ *                 minLength: 3
  *                 example: Password123!
  *     responses:
  *       201:
- *         description: User registered successfully
+ *         description: User registered successfully. JWT token is set in httpOnly cookie (authToken).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User registered successfully.
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                     email:
+ *                       type: string
+ *                     role:
+ *                       type: string
+ *                     api_calls:
+ *                       type: integer
+ *         headers:
+ *           Set-Cookie:
+ *             description: JWT token in httpOnly cookie
+ *             schema:
+ *               type: string
+ *               example: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...; HttpOnly; Path=/; Max-Age=7200
  *       400:
  *         description: Bad request — email already exists or validation failed
  *       500:
@@ -43,7 +70,7 @@ import authMiddleware from "../middleware/auth.js";
  * @swagger
  * /api/auth/login:
  *   post:
- *     summary: Login user and return JWT token
+ *     summary: Login user and set JWT token in httpOnly cookie
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -55,13 +82,39 @@ import authMiddleware from "../middleware/auth.js";
  *             properties:
  *               email:
  *                 type: string
+ *                 format: email
  *                 example: test@example.com
  *               password:
  *                 type: string
  *                 example: Password123!
  *     responses:
  *       200:
- *         description: Login successful — JWT token returned
+ *         description: Login successful. JWT token is set in httpOnly cookie (authToken). Token is NOT returned in response body for security.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Login successful.
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                     email:
+ *                       type: string
+ *                     role:
+ *                       type: string
+ *                     api_calls:
+ *                       type: integer
+ *         headers:
+ *           Set-Cookie:
+ *             description: JWT token in httpOnly cookie (7 days expiration)
+ *             schema:
+ *               type: string
+ *               example: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...; HttpOnly; Path=/; Max-Age=604800
  *       400:
  *         description: Bad request — missing fields or invalid JSON
  *       401:
@@ -77,12 +130,28 @@ import authMiddleware from "../middleware/auth.js";
  *     summary: Get the currently authenticated user
  *     tags: [Auth]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       200:
  *         description: Current user info returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                     email:
+ *                       type: string
+ *                     role:
+ *                       type: string
+ *                     api_calls:
+ *                       type: integer
  *       401:
- *         description: Unauthorized — missing or invalid token
+ *         description: Unauthorized — missing or invalid token in httpOnly cookie
  *       500:
  *         description: Internal server error
  */
@@ -91,15 +160,29 @@ import authMiddleware from "../middleware/auth.js";
  * @swagger
  * /api/auth/logout:
  *   post:
- *     summary: Logout user (client should delete token)
+ *     summary: Logout user and clear httpOnly cookie
  *     tags: [Auth]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       200:
- *         description: User logged out successfully
+ *         description: User logged out successfully. httpOnly cookie is cleared.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Logout successful.
+ *         headers:
+ *           Set-Cookie:
+ *             description: Clears the authToken cookie
+ *             schema:
+ *               type: string
+ *               example: authToken=; HttpOnly; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT
  *       401:
- *         description: Unauthorized — missing or invalid token
+ *         description: Unauthorized — missing or invalid token in httpOnly cookie
  *       500:
  *         description: Internal server error
  */

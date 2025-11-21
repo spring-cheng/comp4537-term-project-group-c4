@@ -17,10 +17,11 @@ const swaggerOptions = {
     ],
     components: {
       securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
+        cookieAuth: {
+          type: "apiKey",
+          in: "cookie",
+          name: "authToken",
+          description: "JWT token stored in httpOnly cookie for secure authentication",
         },
       },
     },

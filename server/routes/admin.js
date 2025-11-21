@@ -16,12 +16,12 @@ import authMiddleware from "../middleware/auth.js";
  *     summary: Get all users with their API usage
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       200:
  *         description: List of users returned successfully
  *       401:
- *         description: Unauthorized — missing or invalid token
+ *         description: Unauthorized — missing or invalid token in httpOnly cookie
  *       403:
  *         description: Forbidden — user is not an admin
  *       500:
@@ -35,12 +35,12 @@ import authMiddleware from "../middleware/auth.js";
  *     summary: Get global API usage stats
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       200:
  *         description: Usage stats returned successfully
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized — missing or invalid token in httpOnly cookie
  *       403:
  *         description: Forbidden — admin access required
  *       500:
@@ -54,14 +54,14 @@ import authMiddleware from "../middleware/auth.js";
  *     summary: Get request count for each API endpoint
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       200:
  *         description: Endpoint stats returned successfully
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized — missing or invalid token in httpOnly cookie
  *       403:
- *         description: Forbidden
+ *         description: Forbidden — admin access required
  *       500:
  *         description: Internal server error
  */
@@ -73,7 +73,7 @@ import authMiddleware from "../middleware/auth.js";
  *     summary: Get info about a specific user
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -87,9 +87,9 @@ import authMiddleware from "../middleware/auth.js";
  *       400:
  *         description: Invalid user ID
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized — missing or invalid token in httpOnly cookie
  *       403:
- *         description: Forbidden
+ *         description: Forbidden — admin access required
  *       404:
  *         description: User not found
  *       500:
@@ -100,25 +100,26 @@ import authMiddleware from "../middleware/auth.js";
  * @swagger
  * /api/admin/user/{id}/reset-api-calls:
  *   patch:
- *     summary: Reset a user's API call count
+ *     summary: Reset a user's API call count to 0
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: integer
+ *           example: 5
  *     responses:
  *       200:
  *         description: API calls reset successfully
  *       400:
  *         description: Invalid ID
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized — missing or invalid token in httpOnly cookie
  *       403:
- *         description: Forbidden
+ *         description: Forbidden — admin access required
  *       404:
  *         description: User not found
  *       500:

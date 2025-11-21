@@ -16,14 +16,14 @@ import authMiddleware from "../middleware/auth.js";
  *     summary: Get landing page content depending on user role
  *     tags: [Landing]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       200:
  *         description: Landing page data returned successfully
  *       400:
  *         description: Bad request or missing required fields
  *       401:
- *         description: Unauthorized — missing or invalid authentication token
+ *         description: Unauthorized — missing or invalid authentication token in httpOnly cookie
  *       403:
  *         description: Forbidden — user role does not have access
  *       500:
