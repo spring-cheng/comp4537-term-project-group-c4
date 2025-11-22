@@ -309,3 +309,38 @@ button:active {
     padding: 2rem 1.5rem 3rem;
   }
 }
+.btn-landing {
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.btn-login {
+  background: #0074D9;
+  color: white;
+}
+
+.btn-signup {
+  background: #2ECC40;
+  color: white;
+}
+
+.btn-landing:hover {
+  opacity: 0.85;
+}
+
+.landing-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.landing-buttons a {
+  text-decoration: none;
+  display: inline-block;
+}
