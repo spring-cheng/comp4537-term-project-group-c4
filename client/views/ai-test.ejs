@@ -1,41 +1,41 @@
-<%- include('partials/header', { title: "AI Test" }) %>
+<%- include('partials/header', { title: "Ethics Essay Generator" }) %>
 
-    <div class="admin-container">
-        <h1 class="page-title" id="ai-test-title">Test TinyLlama Model</h1>
-
-        <section class="stats-section">
-            <!-- API Usage Display -->
-            <div id="apiUsage" class="api-usage-container">
-                <h3 id="api-usage-title" class="api-usage-title">API Usage</h3>
-                <p id="apiUsageText" class="api-usage-text">Loading...</p>
-            </div>
-
-            <!-- Warning Display -->
-            <div id="warningContainer" class="warning-container">
-                <p id="warningText" class="warning-text"></p>
-            </div>
-
-            <div class="form-group">
-                <label for="prompt" id="prompt-label">Enter your prompt:</label>
-                <textarea id="prompt" rows="4"
-                    style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid #ccc; font-size: 0.95rem; font-family: inherit;"></textarea>
-            </div>
-
-            <button id="generateBtn" style="margin-top: 1rem;">Generate Response</button>
-
-            <div id="responseContainer" style="margin-top: 2rem; display: none;">
-                <h3 id="response-label" style="color: #0074d9; margin-bottom: 1rem;">Response:</h3>
-                <div id="response"
-                    style="background: white; padding: 1.5rem; border-radius: 10px; text-align: left; white-space: pre-wrap; min-height: 100px; box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);">
-                </div>
-            </div>
-
-            <div id="message" class="message" style="margin-top: 1rem;"></div>
-        </section>
-
-        <button id="backBtn" style="background: #666; margin-top: 2rem;">Back to Dashboard</button>
+<div class="admin-container">
+    <div class="ethics-header">
+        <h1 class="ethics-title" id="ai-test-title">Ethics Essay Generator</h1>
+        <p class="ethics-subtitle">Explore ethical perspectives with AI-assisted analysis</p>
     </div>
 
-    <script type="module" src="ai-test.js"></script>
+    <section class="stats-section">
+        <!-- API Usage Display -->
+        <div id="apiUsage" class="api-usage-container">
+            <h3 id="api-usage-title" class="api-usage-title">API Usage</h3>
+            <p id="apiUsageText" class="api-usage-text">Loading...</p>
+        </div>
 
-    <%- include('partials/footer') %>
+        <!-- Warning Display -->
+        <div id="warningContainer" class="warning-container">
+            <p id="warningText" class="warning-text"></p>
+        </div>
+
+        <div class="form-group">
+            <label for="prompt" id="prompt-label">Enter your ethical question or topic:</label>
+            <textarea id="prompt" rows="4" placeholder="e.g., What are the ethical implications of artificial intelligence in healthcare?"></textarea>
+        </div>
+
+        <button id="generateBtn">Generate Essay</button>
+
+        <div id="responseContainer" style="display: none;">
+            <h3 id="response-label">Generated Essay:</h3>
+            <div id="response"></div>
+        </div>
+
+        <div id="message" class="message"></div>
+    </section>
+
+    <button id="backBtn">Back to Dashboard</button>
+</div>
+
+<script type="module" src="ai-test.js"></script>
+
+<%- include('partials/footer') %>
