@@ -1,5 +1,6 @@
 import Database from "../db/Database.js";
 import { userMessages } from "../lang/en/messages.js";
+import UserApiUsage from "./UserApiUsage.js";
 
 /**
  * User Model Class
@@ -11,7 +12,6 @@ class User {
     this.email = data.email || null;
     this.password_hash = data.password_hash || null;
     this.role = data.role || "user";
-    this.api_calls = data.api_calls || 0;
     this.created_at = data.created_at || null;
   }
 
@@ -26,7 +26,6 @@ class User {
         email VARCHAR(255) UNIQUE NOT NULL,
         password_hash VARCHAR(255) NOT NULL,
         role ENUM('user', 'admin') DEFAULT 'user',
-        api_calls INT DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       ) ENGINE=InnoDB;
     `;
@@ -48,7 +47,7 @@ class User {
    */
   static async findByEmail(email) {
     const [rows] = await Database.query(
-      "SELECT id, email, password_hash, role, api_calls, created_at FROM users WHERE email = ?",
+      "SELECT id, email, password_hash, role, created_at FROM users WHERE email = ?",
       [email]
     );
 
@@ -67,7 +66,7 @@ class User {
    */
   static async findById(id) {
     const [rows] = await Database.query(
-      "SELECT id, email, password_hash, role, api_calls, created_at \
+      "SELECT id, email, password_hash, role, created_at \
       FROM users WHERE id = ? \
       LIMIT 1",
       [id]
@@ -81,14 +80,14 @@ class User {
   }
 
   /**
-   * Find user by ID 
+   * Find user by ID with API usage
    * @static
    * @param {number} id - User ID
-   * @returns {Promise<User|null>} User instance or null
+   * @returns {Promise<Object|null>} User data with api_calls or null
    */
   static async findByIdWithoutPassword(id) {
     const [rows] = await Database.query(
-      "SELECT id, email, role, api_calls, created_at \
+      "SELECT id, email, role, created_at \
       FROM users WHERE id = ? \
       LIMIT 1",
       [id]
@@ -98,7 +97,10 @@ class User {
       return null;
     }
 
-    return new User(rows[0]);
+    const user = new User(rows[0]);
+    const apiCalls = await UserApiUsage.getApiCalls(id);
+
+    return { ...user, api_calls: apiCalls };
   }
 
   /**
@@ -133,7 +135,9 @@ class User {
     this.email = email;
     this.password_hash = passwordHash;
     this.role = role;
-    this.api_calls = 0;
+
+    // Initialize API usage entry
+    await UserApiUsage.getApiCalls(this.id);
 
     return this;
   }
@@ -146,8 +150,8 @@ class User {
     if (this.id) {
       // Update existing user
       await Database.query(
-        "UPDATE users SET email = ?, password_hash = ?, role = ?, api_calls = ? WHERE id = ?",
-        [this.email, this.password_hash, this.role, this.api_calls, this.id]
+        "UPDATE users SET email = ?, password_hash = ?, role = ? WHERE id = ?",
+        [this.email, this.password_hash, this.role, this.id]
       );
     } else {
       // Insert new user
@@ -163,11 +167,7 @@ class User {
    */
   async incrementApiCalls() {
     if (this.role !== "admin") {
-      await Database.query(
-        "UPDATE users SET api_calls = api_calls + 1 WHERE id = ?",
-        [this.id]
-      );
-      this.api_calls = (this.api_calls || 0) + 1;
+      await UserApiUsage.incrementApiCalls(this.id);
     }
   }
 
@@ -176,23 +176,42 @@ class User {
    * @returns {Promise<void>}
    */
   async resetApiCalls() {
-    await Database.query("UPDATE users SET api_calls = 0 WHERE id = ?", [
-      this.id,
-    ]);
-    this.api_calls = 0;
+    await UserApiUsage.resetApiCalls(this.id);
   }
 
   /**
-   * Get all users
+   * Get API calls count
+   * @returns {Promise<number>} API calls count
+   */
+  async getApiCalls() {
+    return await UserApiUsage.getApiCalls(this.id);
+  }
+
+  /**
+   * Get all users with API usage
    * @static
-   * @returns {Promise<Array<User>>} Array of user instances
+   * @returns {Promise<Array<Object>>} Array of user data with api_calls
    */
   static async findAll() {
-    const [rows] = await Database.query(
-      "SELECT id, email, role, api_calls, created_at FROM users ORDER BY created_at DESC"
-    );
+    const [rows] = await Database.query(`
+      SELECT
+        u.id,
+        u.email,
+        u.role,
+        u.created_at,
+        COALESCE(uau.api_calls, 0) as api_calls
+      FROM users u
+      LEFT JOIN user_api_usage uau ON u.id = uau.user_id
+      ORDER BY u.created_at DESC
+    `);
 
-    return rows.map((row) => new User(row));
+    return rows.map((row) => ({
+      id: row.id,
+      email: row.email,
+      role: row.role,
+      api_calls: row.api_calls,
+      created_at: row.created_at
+    }));
   }
 
   /**
@@ -204,7 +223,21 @@ class User {
       id: this.id,
       email: this.email,
       role: this.role,
-      api_calls: this.api_calls || 0,
+      created_at: this.created_at,
+    };
+  }
+
+  /**
+   * Convert user to JSON with API usage
+   * @returns {Promise<Object>} User data with api_calls
+   */
+  async toJSONWithUsage() {
+    const apiCalls = await this.getApiCalls();
+    return {
+      id: this.id,
+      email: this.email,
+      role: this.role,
+      api_calls: apiCalls,
       created_at: this.created_at,
     };
   }

@@ -109,7 +109,7 @@ class AI {
         try {
           user = await User.findById(req.user.id);
           if (user && user.role !== "admin") {
-            const currentCalls = user.api_calls || 0;
+            const currentCalls = await user.getApiCalls();
             if (currentCalls >= FREE_API_LIMIT) {
               limitReached = true;
               warningMessage = `Warning: You have reached your free API call limit of ${FREE_API_LIMIT}. This request will still be processed, but please consider upgrading for continued service.`;
@@ -146,10 +146,11 @@ class AI {
 
       // Send warning message first if limit reached (before streaming response)
       if (warningMessage) {
+        const apiCalls = user ? await user.getApiCalls() : 0;
         res.write(JSON.stringify({
           warning: warningMessage,
           limit_reached: limitReached,
-          api_calls: user ? (user.api_calls || 0) : null,
+          api_calls: apiCalls,
           limit: FREE_API_LIMIT
         }) + "\n");
       }

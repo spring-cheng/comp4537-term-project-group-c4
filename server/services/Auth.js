@@ -42,7 +42,7 @@ class Auth {
 
     return {
       token,
-      user: user.toJSON(),
+      user: await user.toJSONWithUsage(),
     };
   }
 
@@ -74,7 +74,7 @@ class Auth {
 
     return {
       token,
-      user: user.toJSON(),
+      user: await user.toJSONWithUsage(),
     };
   }
 

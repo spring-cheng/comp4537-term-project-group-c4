@@ -26,7 +26,7 @@ class DashboardService {
         const limitReached = user.role !== "admin" && apiCalls >= limit;
 
         return {
-            user: user.toJSON(),
+            user: user,
             api_usage: {
                 api_calls: apiCalls,
                 limit: limit,

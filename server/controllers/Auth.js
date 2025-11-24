@@ -93,7 +93,7 @@ class Auth {
       const user = await this.authService.getCurrentUser(req.user.id);
 
       res.json({
-        user: user.toJSON(),
+        user: user,
       });
     } catch (error) {
       console.error("Get user info error:", error);

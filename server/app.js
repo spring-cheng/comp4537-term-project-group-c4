@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import { userMessages } from "./lang/en/messages.js";
 import User from "./models/User.js";
+import UserApiUsage from "./models/UserApiUsage.js";
 import AdminService from "./services/Admin.js";
 import Admin from "./routes/admin.js";
 import AI from "./routes/ai.js";
@@ -74,6 +75,7 @@ class App {
   async initializeDatabase() {
     try {
       await User.initTable();
+      await UserApiUsage.initTable();
       await AdminService.initEndpointStatsTable();
       // Create default admin user
       await DefaultAdmin.create();

@@ -42,7 +42,7 @@ class Admin {
     const activeUsers = users.filter((user) => (user.api_calls || 0) > 0).length;
 
     return {
-      users: users.map((user) => user.toJSON()),
+      users: users,
       statistics: {
         total_users: totalUsers,
         total_api_calls: totalApiCalls,
