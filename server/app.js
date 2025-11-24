@@ -31,9 +31,9 @@ class App {
    * Initialize middleware
    */
   initializeMiddleware() {
-    // CORS configuration - allow requests from client origin (port 8080)
+    // CORS configuration - allow requests from client origin
     this.app.use(cors({
-      origin: 'http://localhost:8080',
+      origin: ['http://localhost:8080', 'https://comp4537-term-project-group-c4.onrender.com'],
       credentials: true,
       methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key']

@@ -11,6 +11,10 @@ const swaggerOptions = {
     },
     servers: [
       {
+        url: "https://zzziii.me/COMP4537/term-project",
+        description: "Production server",
+      },
+      {
         url: "http://localhost:4000",
         description: "Local development server",
       },

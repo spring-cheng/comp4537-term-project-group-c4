@@ -1,6 +1,6 @@
 // Base URL for the API server
-// TODO: Change to the production URL
-export const API_BASE_URL = "http://localhost:4000";
+// Backend server URL
+export const API_BASE_URL = "https://zzziii.me/COMP4537/term-project";
 
 // Full API endpoint base (includes /api prefix)
 export const API_URL = `${API_BASE_URL}/api`;

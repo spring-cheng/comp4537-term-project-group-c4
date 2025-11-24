@@ -58,7 +58,7 @@ class Admin {
       if (isNaN(userId)) {
         return res.status(400).json({
           error: userMessages.INVALID_INPUT,
-          details: "Invalid user ID.",
+          details: userMessages.INVALID_USER_ID,
         });
       }
 
@@ -86,14 +86,14 @@ class Admin {
       if (isNaN(userId)) {
         return res.status(400).json({
           error: userMessages.INVALID_INPUT,
-          details: "Invalid user ID.",
+          details: userMessages.INVALID_USER_ID,
         });
       }
 
       await this.adminService.resetUserApiCalls(userId);
 
       res.json({
-        message: "API calls reset successfully.",
+        message: userMessages.RESET_API_CALLS_SUCCESS,
         user_id: userId,
       });
     } catch (error) {

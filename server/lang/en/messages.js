@@ -41,4 +41,6 @@ export const userMessages = {
 
   // Admin
   FORBIDDEN: "Forbidden. Admin access required.",
+  INVALID_USER_ID: "Invalid user ID.",
+  RESET_API_CALLS_SUCCESS: "API calls reset successfully.",
 };
