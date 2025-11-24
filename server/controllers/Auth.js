@@ -25,7 +25,7 @@ class Auth {
       const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-        sameSite: 'lax', // CSRF protection
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-origin in production
         maxAge: 2 * 60 * 60 * 1000, // 2 hours
         path: '/', // Available for all paths
       };
@@ -61,7 +61,7 @@ class Auth {
       const cookieOptions = {
         httpOnly: true, // Prevents JavaScript access (XSS protection)
         secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-        sameSite: 'lax', // CSRF protection
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-origin in production
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
         path: '/', // Available for all paths
       };
@@ -115,7 +115,7 @@ class Auth {
     res.clearCookie('authToken', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       path: '/',
     });
 
@@ -137,7 +137,7 @@ class Auth {
       res.clearCookie('authToken', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         path: '/',
       });
 
