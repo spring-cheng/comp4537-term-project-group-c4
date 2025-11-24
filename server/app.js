@@ -35,7 +35,7 @@ class App {
     this.app.use(cors({
       origin: 'http://localhost:8080',
       credentials: true,
-      methods: ['GET', 'POST', 'PATCH', 'OPTIONS'],
+      methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key']
     }));
     this.app.use(express.json());

@@ -22,6 +22,8 @@ export const MESSAGES = {
   testAiModel: "Test AI Model",
   backToDashboard: "Back to Dashboard",
   resetButton: "Reset",
+  deleteAccountButton: "Delete Account",
+  confirmDeleteAccount: "Are you sure you want to permanently delete your account? This action cannot be undone.",
 
   // Empty/Default
   messageDiv: "",
@@ -42,6 +44,7 @@ export const MESSAGES = {
   loginSuccess: "Login successful! Redirecting...",
   responseSuccess: "Response generated successfully!",
   resetSuccess: "API calls reset successfully!",
+  deleteAccountSuccess: "Account deleted successfully. Redirecting...",
 
   // Error messages
   registrationFailed: "Registration failed",
@@ -52,6 +55,7 @@ export const MESSAGES = {
   errorGenerating: "Error generating response.",
   responseFailed: "Failed to generate response: ",
   apiError: "API error: ",
+  deleteAccountFailed: "Failed to delete account",
 
   // Dashboard
   dashboard: {

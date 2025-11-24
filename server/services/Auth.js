@@ -91,6 +91,25 @@ class Auth {
 
     return user;
   }
+
+  /**
+   * Delete user account
+   * @param {number} userId - User ID
+   * @returns {Promise<void>}
+   */
+  async deleteAccount(userId) {
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error(userMessages.NOT_FOUND);
+    }
+
+    // Prevent admin account deletion at server level
+    if (user.role === "admin") {
+      throw new Error(userMessages.CANNOT_DELETE_ADMIN);
+    }
+
+    await user.delete();
+  }
 }
 
 export default Auth;

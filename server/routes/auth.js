@@ -188,6 +188,39 @@ import authMiddleware from "../middleware/auth.js";
  */
 
 /**
+ * @swagger
+ * /api/auth/account:
+ *   delete:
+ *     summary: Permanently delete user account (requires authentication)
+ *     tags: [Auth]
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: Account deleted successfully. User data and API usage records removed. httpOnly cookie cleared.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Account deleted successfully.
+ *         headers:
+ *           Set-Cookie:
+ *             description: Clears the authToken cookie
+ *             schema:
+ *               type: string
+ *               example: authToken=; HttpOnly; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT
+ *       401:
+ *         description: Unauthorized — missing or invalid token in httpOnly cookie
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
  * Auth Routes Class
  * Handles all authentication-related routes
  */
@@ -241,6 +274,17 @@ class Auth {
      */
     this.router.post("/logout", authMiddleware.authenticateToken(), (req, res) => {
       this.authController.logout(req, res);
+    });
+
+    /**
+     * DELETE /api/auth/account
+     * Permanently delete user account
+     */
+    this.router.delete("/account", authMiddleware.authenticateToken(), (req, res) => {
+      this.authController.deleteAccount(req, res).catch((err) => {
+        console.error("Unhandled error in deleteAccount:", err);
+        res.status(500).json({ error: "Internal server error" });
+      });
     });
   }
 

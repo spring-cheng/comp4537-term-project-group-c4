@@ -27,6 +27,9 @@ export const userMessages = {
   INVALID_PASSWORD: "Password must be at least 3 characters.",
   INVALID_FIRST_NAME: "First name is required.",
   LOGOUT_SUCCESS: "Logout successful.",
+  DELETE_ACCOUNT_SUCCESS: "Account deleted successfully.",
+  DELETE_ACCOUNT_FAILED: "Failed to delete account.",
+  CANNOT_DELETE_ADMIN: "Admin accounts cannot be deleted.",
   TOKEN_MISSING: "Authentication token is missing.",
   TOKEN_INVALID: "Invalid or expired token.",
 

@@ -123,6 +123,36 @@ class Auth {
       message: userMessages.LOGOUT_SUCCESS,
     });
   }
+
+  /**
+   * Delete user account (permanent)
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   */
+  async deleteAccount(req, res) {
+    try {
+      await this.authService.deleteAccount(req.user.id);
+
+      // Clear the httpOnly cookie after deletion
+      res.clearCookie('authToken', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+      });
+
+      res.json({
+        message: userMessages.DELETE_ACCOUNT_SUCCESS,
+      });
+    } catch (error) {
+      console.error("Delete account error:", error);
+      const statusCode = error.message === userMessages.NOT_FOUND ? 404 : 500;
+      res.status(statusCode).json({
+        error: error.message || userMessages.DELETE_ACCOUNT_FAILED,
+        details: error.message,
+      });
+    }
+  }
 }
 
 export default Auth;

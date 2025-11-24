@@ -241,6 +241,28 @@ class User {
       created_at: this.created_at,
     };
   }
+
+  /**
+   * Delete user account
+   * @returns {Promise<void>}
+   */
+  async delete() {
+    if (!this.id) {
+      throw new Error("Cannot delete user without ID");
+    }
+
+    await Database.query("DELETE FROM users WHERE id = ?", [this.id]);
+  }
+
+  /**
+   * Delete user by ID
+   * @static
+   * @param {number} id - User ID
+   * @returns {Promise<void>}
+   */
+  static async deleteById(id) {
+    await Database.query("DELETE FROM users WHERE id = ?", [id]);
+  }
 }
 
 export default User;

@@ -41,6 +41,11 @@ async function loadUserData() {
     // Store role for client-side checks
     if (data.user && data.user.role) {
       localStorage.setItem('role', data.user.role);
+
+      // Show delete button only for non-admin users
+      if (data.user.role !== 'admin') {
+        document.getElementById('deleteAccountBtn').style.display = 'block';
+      }
     }
   } catch (err) {
     console.error(err);
@@ -64,6 +69,34 @@ document.getElementById("logoutBtn").addEventListener("click", async () => {
   // Clear localStorage
   localStorage.removeItem("role");
   window.location.href = "/login";
+});
+
+// delete account handler
+document.getElementById("deleteAccountBtn").addEventListener("click", async () => {
+  // Show confirmation dialog
+  if (!confirm(MESSAGES.confirmDeleteAccount)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(API_ENDPOINTS.AUTH.DELETE_ACCOUNT, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert(MESSAGES.deleteAccountSuccess);
+      localStorage.removeItem("role");
+      window.location.href = "/";
+    } else {
+      alert(MESSAGES.deleteAccountFailed + ': ' + (data.error || data.message));
+    }
+  } catch (err) {
+    console.error('Delete account error:', err);
+    alert(MESSAGES.networkError);
+  }
 });
 
 loadUserData();
