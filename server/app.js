@@ -1,17 +1,17 @@
 import cors from "cors";
 import express from "express";
+import { setupSwagger } from "./config/swagger.js";
+import Database from "./db/Database.js";
 import { userMessages } from "./lang/en/messages.js";
 import User from "./models/User.js";
 import UserApiUsage from "./models/UserApiUsage.js";
-import AdminService from "./services/Admin.js";
 import Admin from "./routes/admin.js";
 import AI from "./routes/ai.js";
 import Auth from "./routes/auth.js";
 import Dashboard from "./routes/Dashboard.js";
 import Landing from "./routes/Landing.js";
+import AdminService from "./services/Admin.js";
 import DefaultAdmin from "./utils/defaultAdmin.js";
-import Database from "./db/Database.js";
-import { setupSwagger } from "./config/swagger.js";
 
 /**
  * Express Application Class
@@ -31,6 +31,8 @@ class App {
    * Initialize middleware
    */
   initializeMiddleware() {
+    this.app.set("trust proxy", 1);
+
     // CORS configuration - allow requests from client origin
     this.app.use(cors({
       origin: ['http://localhost:8080', 'https://comp4537-term-project-group-c4.onrender.com'],
