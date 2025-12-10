@@ -100,12 +100,13 @@ Handles all database operations related to users.
     - `data` (Object): User data object
 
 - **`async create(email, passwordHash, role = "user")`**
-  - Create a new user in database
+  - Create a new user in database (instance method that saves the current user object)
   - **Parameters:**
     - `email` (string): User email
     - `passwordHash` (string): Hashed password
     - `role` (string): User role (default: "user")
-  - **Returns:** Promise<User> - Created user instance
+  - **Returns:** Promise<User> - Created user instance with populated ID
+  - **Note:** This method sets the instance properties and inserts into database
 
 - **`async save()`**
   - Save user to database (update if exists, insert if new)
@@ -560,7 +561,7 @@ Handles creation of default admin user.
 #### Methods:
 
 - **`constructor()`**
-  - Initialize with default admin credentials (admin@admin.com / 111)
+  - Initialize with default admin credentials (configurable in the class)
 
 - **`async create()`**
   - Create default admin user if doesn't exist
@@ -707,9 +708,16 @@ This application uses an **Object-Oriented MVC architecture** with the following
 7. **Client** - Frontend JavaScript for UI interactions
 
 **Total Methods Count:**
-- **Backend (Server):** ~70+ methods across all classes
-- **Frontend (Client):** ~15+ JavaScript functions
-- **Combined:** ~85+ methods/functions
+- **Backend (Server):** 70+ methods across all classes
+  - Database Layer: 3 methods
+  - Models: 22 methods
+  - Services: 17 methods
+  - Controllers: 13 methods
+  - Middleware: 6 methods/functions
+  - Routes: 6 methods
+  - Utilities: 3 methods
+- **Frontend (Client):** 15+ JavaScript functions
+- **Combined:** 85+ methods/functions
 
 **Key Design Patterns:**
 - Singleton (Database)
