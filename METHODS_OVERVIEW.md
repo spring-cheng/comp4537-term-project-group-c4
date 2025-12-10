@@ -372,9 +372,10 @@ This document provides a comprehensive overview of all methods used in the COMP4
 - **`validateApiKey()`**
   - Middleware to validate API key header
   - Optionally verifies JWT for user identification
-  - Uses 'supersecret' as test API key
+  - Uses test API key for development/testing purposes
   - Returns: Express middleware function
   - Sends 401 if key missing, 403 if invalid
+  - **⚠️ Security Note:** Uses hardcoded test key - should be replaced with secure key management in production
 
 ### validation.js (Middleware)
 **Location:** `server/middleware/validation.js`  
@@ -415,8 +416,9 @@ This document provides a comprehensive overview of all methods used in the COMP4
 #### Methods:
 - **`create()`**
   - Creates default admin user if doesn't exist
-  - Email: admin@admin.com, Password: 111, Role: admin
+  - Uses predefined credentials for initial setup
   - Returns: Promise<void>
+  - **⚠️ Security Note:** Creates default admin account - credentials should be changed immediately in production
 
 - **`hashPassword(password)`**
   - Hashes password using bcrypt
@@ -565,6 +567,29 @@ This document provides a comprehensive overview of all methods used in the COMP4
 6. **JWT Authentication:** Stateless authentication with httpOnly cookies
 7. **Async/Await:** Consistent use of promises and async operations
 8. **Error Handling:** Try-catch blocks with appropriate error messages
+
+---
+
+## Security Considerations
+
+**⚠️ Important Security Notes:**
+
+This repository contains several development/testing configurations that should be addressed before production deployment:
+
+1. **Default Admin Account:** The system creates a default admin account on initialization. These credentials are hardcoded in the source code and should be changed immediately in production environments.
+
+2. **Test API Key:** The API key validation middleware uses a hardcoded test key for development. In production, implement proper API key management with:
+   - Environment variable-based secrets
+   - Key rotation policies
+   - Secure key storage (e.g., AWS Secrets Manager, Azure Key Vault)
+
+3. **JWT Secret:** Ensure the JWT_SECRET environment variable is set to a strong, random value in production (not the default fallback).
+
+4. **Password Requirements:** Current minimum password length is 3 characters for testing. Production should enforce stronger password policies.
+
+5. **HTTPS:** The httpOnly cookies are configured for secure transmission in production mode. Always use HTTPS in production.
+
+These security considerations are documented here because the values are already present in the source code. This documentation serves as a reference and reminder to address these items before production deployment.
 
 ---
 
